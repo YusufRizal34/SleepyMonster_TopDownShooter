@@ -37,14 +37,11 @@ public class Grenade : MonoBehaviour
             {
                 rb.AddExplosionForce(explossionForce, transform.position, radius, 1f, ForceMode.Impulse);
             }
-
-            
         }
 
         // show effect
         Instantiate(explossionEffect, transform.position, transform.rotation);
 
         Destroy(gameObject);
-        Debug.Log("BOOOMMM");
     } 
 }

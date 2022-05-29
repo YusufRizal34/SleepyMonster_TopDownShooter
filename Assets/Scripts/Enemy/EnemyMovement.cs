@@ -8,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     PlayerHealth playerHealth;
     EnemyHealth enemyHealth;
     UnityEngine.AI.NavMeshAgent nav;
+    bool attackPlayer = false;
 
     private void Awake ()
     {
@@ -23,9 +24,17 @@ public class EnemyMovement : MonoBehaviour
     void Update ()
     {
         //pindahin posisi player
-        if (enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0)
+        if (enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0 && nav.remainingDistance > nav.stoppingDistance)
         {
-            nav.SetDestination (player.position);
+            nav.updateRotation = true;
+            nav.SetDestination(player.position);
+        }
+        else if(enemyHealth.currentHealth > 0 && playerHealth.currentHealth > 0 && nav.remainingDistance < nav.stoppingDistance){
+            nav.updateRotation = false;
+            // transform.LookAt(player);
+            Vector3 relativePos = player.position - transform.position;
+            Quaternion rotation = Quaternion.LookRotation(relativePos);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 120);
         }
         else //hentikan moving
         {
